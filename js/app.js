@@ -98,6 +98,7 @@ function displayTasks(filteredTasks = tasks) {
           }>Completed</option>
         </select>
       </td>
+       <td><button class="remove-btn" data-index="${index}">Remove</button></td>
     `;
 
     taskList.appendChild(row);
@@ -156,6 +157,7 @@ function overdueTasks() {
 // update status via dropdown
 document.addEventListener("change", (e) => {
   if (e.target.classList.contains("status-dropdown")) {
+    // index = remove-btn
     const index = e.target.dataset.index;
     const newStatus = e.target.value;
 
@@ -165,6 +167,18 @@ document.addEventListener("change", (e) => {
 
     if (newStatus === "Completed") {
       showGif();
+    }
+  }
+});
+
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("remove-btn")) {
+    const index = e.target.dataset.index;
+    const confirmDelete = confirm("Are you sure you want to remove this task?");
+    if (confirmDelete) {
+      tasks.splice(index, 1);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      displayTasks();
     }
   }
 });
