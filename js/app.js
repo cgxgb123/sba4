@@ -4,7 +4,9 @@ const deadline = document.getElementById("deadline");
 const tStatus = document.getElementById("status");
 const addTaskBtn = document.getElementById("addTask");
 const taskList = document.getElementById("taskList");
-const rmvTaskBtn = document.getElementById("rmvTask");
+const filterCategory = document.getElementById("filter-category");
+const filterStatus = document.getElementById("filter-status");
+const clearFiltersBtn = document.getElementById("clear-filters");
 
 const statusStyles = {
   Overdue: { color: "red", fontWeight: "bold" },
@@ -13,6 +15,27 @@ const statusStyles = {
 };
 //  load tasks from local storage on refresh
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+function clearFilters() {
+  filterCategory.value = "all";
+  filterStatus.value = "all";
+  displayTasks(tasks);
+}
+
+function filterTasks() {
+  const selectedCategory = filterCategory.value;
+  const selectedStatus = filterStatus.value;
+
+  // Filter tasks based on user selections
+  const filtered = tasks.filter((task) => {
+    const matchCategory =
+      selectedCategory === "all" || task.category === selectedCategory;
+    const matchStatus =
+      selectedStatus === "all" || task.status === selectedStatus;
+
+    return matchCategory && matchStatus;
+  });
+  displayTasks(filtered);
+}
 
 function displayTasks(filteredTasks = tasks) {
   taskList.innerHTML = "";
@@ -86,8 +109,6 @@ function addTask() {
   displayTasks();
 }
 
-addTaskBtn.addEventListener("click", addTask);
-
 document.addEventListener("change", (e) => {
   if (e.target.classList.contains("status-dropdown")) {
     const index = e.target.dataset.index;
@@ -112,3 +133,7 @@ function overdueTasks() {
   displayTasks();
 }
 overdueTasks();
+filterCategory.addEventListener("change", filterTasks);
+filterStatus.addEventListener("change", filterTasks);
+clearFiltersBtn.addEventListener("click", clearFilters);
+addTaskBtn.addEventListener("click", addTask);
