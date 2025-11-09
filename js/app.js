@@ -10,39 +10,43 @@ const clearFiltersBtn = document.getElementById("clear-filters");
 
 const statusStyles = {
   Overdue: { color: "red", fontWeight: "bold" },
-  Completed: { color: "Green" },
-  "In Progress": { color: "Orange" },
+  Completed: { color: "green" },
+  "In Progress": { color: "orange" },
 };
-//  load tasks from local storage on refresh
+
+// load tasks from local storage on refresh
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+// clear filters
 function clearFilters() {
   filterCategory.value = "all";
   filterStatus.value = "all";
-  displayTasks(tasks);
+  displayTasks();
 }
 
+// filter tasks
 function filterTasks() {
   const selectedCategory = filterCategory.value;
   const selectedStatus = filterStatus.value;
-
-  // Filter tasks based on user selections
   const filtered = tasks.filter((task) => {
     const matchCategory =
       selectedCategory === "all" || task.category === selectedCategory;
     const matchStatus =
       selectedStatus === "all" || task.status === selectedStatus;
-
     return matchCategory && matchStatus;
   });
+
   displayTasks(filtered);
 }
 
+// display tasks
 function displayTasks(filteredTasks = tasks) {
   taskList.innerHTML = "";
 
   filteredTasks.forEach((task, index) => {
     const row = document.createElement("tr");
 
+    // apply style dynamically using the status map
     for (const status in statusStyles) {
       if (task.status === status) {
         const styleObj = statusStyles[status];
@@ -51,6 +55,7 @@ function displayTasks(filteredTasks = tasks) {
         }
       }
     }
+
     row.innerHTML = `
       <td>${task.name}</td>
       <td>${task.category}</td>
@@ -69,27 +74,17 @@ function displayTasks(filteredTasks = tasks) {
 
     taskList.appendChild(row);
   });
-  // saves new state of list
-  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-/* 
-Testing tasks, browser storage, and pushing to array
-tasks.push({
-  name: "nameTest",
-  category: "categoryTest",
-  status: "statusTest",
-  deadline: "2025",
-});
-console.log(displayTasks());
- */
+// add new task
 function addTask() {
   const nameVal = taskName.value.trim();
   const categoryVal = category.value.trim();
   const tStatusVal = tStatus.value.trim();
   const deadlineVal = deadline.value.trim();
+
   if (nameVal === "" || deadlineVal === "") {
-    alert("Umm. It seems you forgot to enter a task name and deadline");
+    alert("umm. it seems you forgot to enter a task name and deadline");
     return;
   }
 
@@ -102,13 +97,31 @@ function addTask() {
 
   tasks.push(newTask);
   localStorage.setItem("tasks", JSON.stringify(tasks));
+
   // clear inputs after adding
   taskName.value = "";
   deadline.value = "";
   tStatus.value = "In Progress";
+
   displayTasks();
 }
 
+// mark overdue tasks
+function overdueTasks() {
+  const today = new Date();
+
+  tasks.forEach((task) => {
+    const taskDate = new Date(task.deadline);
+    if (task.status !== "Completed" && taskDate < today) {
+      task.status = "Overdue";
+    }
+  });
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  displayTasks();
+}
+
+// update status via dropdown
 document.addEventListener("change", (e) => {
   if (e.target.classList.contains("status-dropdown")) {
     const index = e.target.dataset.index;
@@ -120,20 +133,11 @@ document.addEventListener("change", (e) => {
   }
 });
 
-function overdueTasks() {
-  const today = new Date();
-
-  tasks.forEach((task) => {
-    const taskDate = new Date(task.deadline);
-    if (task.status !== "Completed" && taskDate < today) {
-      task.status = "Overdue";
-    }
-  });
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  displayTasks();
-}
-overdueTasks();
+// event listeners for filters and add button
 filterCategory.addEventListener("change", filterTasks);
 filterStatus.addEventListener("change", filterTasks);
 clearFiltersBtn.addEventListener("click", clearFilters);
 addTaskBtn.addEventListener("click", addTask);
+
+// run overdue check and display tasks on load
+overdueTasks();
