@@ -1,0 +1,27 @@
+body {
+  background-color: slategrey;
+}
+.clear-filters {
+  background-color: aliceblue;
+  padding: auto;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.clear-filters:active {
+  transform: translateY(0);
+}
+.clear-filters:hover {
+  background-color: #e64a19;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(255, 87, 34, 0.3);
+}
+
+img {
+  display: block;
+  margin-left: auto;
+}

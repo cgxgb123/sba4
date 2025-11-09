@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="/css/style.css" />
     <script src="/js/app.js" defer></script>
     <link rel="icon" href="./murakami.gif" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"
+      defer
+    ></script>
   </head>
   <body>
     <h1>Task Manager</h1>
@@ -42,7 +46,14 @@
         <option value="Completed">Completed</option>
         <option value="Overdue">Overdue</option>
       </select>
-      <button id="clear-filters" style="margin-left: 0.5rem">Clear</button>
+
+      <button
+        id="clear-filters"
+        class="clear-filters"
+        style="margin-left: 0.5rem"
+      >
+        Clear
+      </button>
     </div>
     <table id="task-table">
       <thead>
@@ -55,5 +66,11 @@
       </thead>
       <tbody id="taskList"></tbody>
     </table>
+    <img
+      id="celebration"
+      src="happy-dance-animated-gif-image-1-2.gif"
+      alt="Happy Dance Animated Gif"
+      style="display: none"
+    />
   </body>
 </html>

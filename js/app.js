@@ -7,6 +7,7 @@ const taskList = document.getElementById("taskList");
 const filterCategory = document.getElementById("filter-category");
 const filterStatus = document.getElementById("filter-status");
 const clearFiltersBtn = document.getElementById("clear-filters");
+const gif = document.getElementById("celebration");
 
 const statusStyles = {
   Overdue: { color: "red", fontWeight: "bold" },
@@ -16,6 +17,33 @@ const statusStyles = {
 
 // load tasks from local storage on refresh
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+function showGif() {
+  gif.style.display = "block";
+  // launch confetti for 5 seconds
+  const end = Date.now() + 5 * 1000;
+  (function frame() {
+    confetti({
+      particleCount: 4,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+    });
+    confetti({
+      particleCount: 4,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+    });
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  })();
+
+  // hide gif after 5 seconds
+  setTimeout(() => {
+    gif.style.display = "none";
+  }, 5000);
+}
 
 // clear filters
 function clearFilters() {
@@ -130,6 +158,10 @@ document.addEventListener("change", (e) => {
     tasks[index].status = newStatus;
     localStorage.setItem("tasks", JSON.stringify(tasks));
     displayTasks();
+
+    if (newStatus === "Completed") {
+      showGif();
+    }
   }
 });
 
