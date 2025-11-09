@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SBA 4: Task Management App</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/js/app.js"></script>
+  </head>
+  <body>
+    <h1>Task Manager</h1>
+    <div id="task-form">
+      <input id="taskName" type="text" placeholder="Task Name:" />
+      <label for="category">Category:</label>
+      <select id="category" name="category">
+        <option value="personal">Personal</option>
+        <option value="work">Work</option>
+        <option value="school">School</option>
+      </select>
+      <input id="deadline" type="text" placeholder="Deadline:" />
+      <select id="status">
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+      <button id="addTask">Add Task</button>
+    </div>
+    <h2>Task List</h2>
+    <table id="task-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Deadline</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="taskList"></tbody>
+    </table>
+  </body>
+</html>
