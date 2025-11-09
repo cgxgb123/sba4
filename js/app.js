@@ -40,9 +40,6 @@ function displayTasks(filteredTasks = tasks) {
           <option value="Completed" ${
             task.status === "Completed" ? "selected" : ""
           }>Completed</option>
-          <option value="Overdue" ${
-            task.status === "Overdue" ? "selected" : ""
-          }>Overdue</option>
         </select>
       </td>
     `;
@@ -90,7 +87,17 @@ function addTask() {
 }
 
 addTaskBtn.addEventListener("click", addTask);
-displayTasks();
+
+document.addEventListener("change", (e) => {
+  if (e.target.classList.contains("status-dropdown")) {
+    const index = e.target.dataset.index;
+    const newStatus = e.target.value;
+
+    tasks[index].status = newStatus;
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    displayTasks();
+  }
+});
 
 function overdueTasks() {
   const today = new Date();
@@ -104,5 +111,4 @@ function overdueTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
   displayTasks();
 }
-
 overdueTasks();
