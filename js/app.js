@@ -11,7 +11,7 @@ const gif = document.getElementById("celebration");
 
 const statusStyles = {
   Overdue: { color: "red", fontWeight: "bold" },
-  Completed: { color: "green" },
+  Completed: { color: "green", textDecoration: "line-through" },
   "In Progress": { color: "orange" },
 };
 
@@ -132,6 +132,10 @@ function addTask() {
   tStatus.value = "In Progress";
 
   displayTasks();
+
+  if (tStatusVal === "Completed") {
+    showGif();
+  }
 }
 
 // mark overdue tasks
