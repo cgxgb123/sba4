@@ -4,7 +4,13 @@ const deadline = document.getElementById("deadline");
 const tStatus = document.getElementById("status");
 const addTaskBtn = document.getElementById("addTask");
 const taskList = document.getElementById("taskList");
+const rmvTaskBtn = document.getElementById("rmvTask");
 
+const statusStyles = {
+  Overdue: { color: "red", fontWeight: "bold" },
+  Completed: { color: "Green" },
+  "In Progress": { color: "Orange" },
+};
 //  load tasks from local storage on refresh
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
@@ -14,6 +20,14 @@ function displayTasks(filteredTasks = tasks) {
   filteredTasks.forEach((task, index) => {
     const row = document.createElement("tr");
 
+    for (const status in statusStyles) {
+      if (task.status === status) {
+        const styleObj = statusStyles[status];
+        for (const prop in styleObj) {
+          row.style[prop] = styleObj[prop];
+        }
+      }
+    }
     row.innerHTML = `
       <td>${task.name}</td>
       <td>${task.category}</td>
@@ -38,6 +52,7 @@ function displayTasks(filteredTasks = tasks) {
   // saves new state of list
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+
 /* 
 Testing tasks, browser storage, and pushing to array
 tasks.push({
@@ -75,3 +90,19 @@ function addTask() {
 }
 
 addTaskBtn.addEventListener("click", addTask);
+displayTasks();
+
+function overdueTasks() {
+  const today = new Date();
+
+  tasks.forEach((task) => {
+    const taskDate = new Date(task.deadline);
+    if (task.status !== "Completed" && taskDate < today) {
+      task.status = "Overdue";
+    }
+  });
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  displayTasks();
+}
+
+overdueTasks();
