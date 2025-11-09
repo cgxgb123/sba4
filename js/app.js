@@ -5,7 +5,7 @@ const status = document.getElementById("status");
 const addTask = document.getElementById("addTask");
 const taskList = document.getElementById("taskList");
 
-// save and load tasks on refresh
+//  load tasks from local storage on refresh
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 function displayTasks(filteredTasks = tasks) {
@@ -43,6 +43,6 @@ tasks.push({
   name: "nameTest",
   category: "categoryTest",
   status: "statusTest",
-  deadline: "deadlineTest",
+  deadline: "2025",
 });
 console.log(displayTasks()); */
