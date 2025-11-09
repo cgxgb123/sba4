@@ -1,8 +1,8 @@
 const taskName = document.getElementById("taskName");
-const catergory = document.getElementById("category");
+const category = document.getElementById("category");
 const deadline = document.getElementById("deadline");
-const status = document.getElementById("status");
-const addTask = document.getElementById("addTask");
+const tStatus = document.getElementById("status");
+const addTaskBtn = document.getElementById("addTask");
 const taskList = document.getElementById("taskList");
 
 //  load tasks from local storage on refresh
@@ -35,14 +35,43 @@ function displayTasks(filteredTasks = tasks) {
 
     taskList.appendChild(row);
   });
-
+  // saves new state of list
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
-/* Testing tasks, browser storage, and pushing to array
+/* 
+Testing tasks, browser storage, and pushing to array
 tasks.push({
   name: "nameTest",
   category: "categoryTest",
   status: "statusTest",
   deadline: "2025",
 });
-console.log(displayTasks()); */
+console.log(displayTasks());
+ */
+function addTask() {
+  const nameVal = taskName.value.trim();
+  const categoryVal = category.value.trim();
+  const tStatusVal = tStatus.value.trim();
+  const deadlineVal = deadline.value.trim();
+  if (nameVal === "" || deadlineVal === "") {
+    alert("Umm. It seems you forgot to enter a task name and deadline");
+    return;
+  }
+
+  const newTask = {
+    name: nameVal,
+    category: categoryVal,
+    deadline: deadlineVal,
+    status: tStatusVal,
+  };
+
+  tasks.push(newTask);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  // clear inputs after adding
+  taskName.value = "";
+  deadline.value = "";
+  tStatus.value = "In Progress";
+  displayTasks();
+}
+
+addTaskBtn.addEventListener("click", addTask);
